@@ -1,4 +1,3 @@
-
 const User = require('./user.model');
 
 const users = [];
@@ -8,7 +7,6 @@ const getUserById = async (id) => users.find((user) => user.id === id);
 
 const createUser = async (user) => {
   const newUser = new User({
-    id: user.id,
     name: user.name,
     login: user.login,
     password: user.password,
@@ -33,6 +31,7 @@ const deleteUser = async id => {
     return false;
   }
   users.splice(index, 1);
+  // TODO: When somebody DELETEs User, all Tasks where User is assignee should be updated to put userId = null.
   return true;
 };
 
