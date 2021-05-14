@@ -8,23 +8,38 @@ router.route('/').get(async (req, res) => {
   res.json(users.map(User.toResponse));
 });
 
-router.route('/:id').get(
+router.route('/:id').get(async (req, res) => {
+  const user = await usersService.getUserById(req.params.id);
+  if (user) {
+    res.status(200).json(User.toResponse(user));
+  } else {
+    res.status(404).json();
+  }
+});
+
+router.route('/').post(async (req, res) => {
+  const user = await usersService.createUser(req.body);
+  res.status(200).json(User.toResponse(user));
+});
+
+router.route('/:id').put(
   async (req, res) => {
-    const user = await usersService.getUserById(req.params.id);
+    const user = await usersService.updateUser(req.params.id, req.body);
     if (user) {
-      res.status(200).json(User.toResponse(user));
+      await res.status(200).json(User.toResponse(user));
     } else {
-      const error = new Error();
-      error.status = 404;
-      throw error;
+      res.status(401).json();
     }
   }
 );
 
-router.route('/').post(
- async (req, res) => {
-    const user = await usersService.createUser(req.body);
-    res.status(200).json(User.toResponse(user));
+router.route('/:id').delete(
+async (req, res) => {
+    if (await usersService.deleteUser(req.params.id)) {
+      res.status(204).json();
+    } else {
+      res.status(404).json();
+    }
   }
 );
 
