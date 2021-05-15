@@ -2,6 +2,7 @@ const User = require('./user.model');
 const taskService = require('../tasks/task.service');
 
 const users = [];
+
 const getAll = async () => users;
 
 const getUserById = async (id) => users.find((user) => user.id === id);

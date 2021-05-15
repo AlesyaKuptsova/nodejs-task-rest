@@ -42,7 +42,7 @@ const deleteTask = async (taskId) => {
 };
 
 const deleteUserFromTasks = async (userId) => {
-  for(let i = 0; i < tasks.length; i += 1) {
+  for (let i = 0; i < tasks.length; i += 1) {
     const task = tasks[i];
     if (task.userId === userId) {
       task.userId = null;

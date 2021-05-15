@@ -22,23 +22,19 @@ router.route('/').post(async (req, res) => {
   res.status(201).json(User.toResponse(user));
 });
 
-router.route('/:id').put(
-  async (req, res) => {
-    const user = await usersService.updateUser(req.params.id, req.body);
-    if (user) {
-      await res.status(200).json(User.toResponse(user));
-    }
+router.route('/:id').put(async (req, res) => {
+  const user = await usersService.updateUser(req.params.id, req.body);
+  if (user) {
+    await res.status(200).json(User.toResponse(user));
   }
-);
+});
 
-router.route('/:id').delete(
-async (req, res) => {
-    if (await usersService.deleteUser(req.params.id)) {
-      res.status(204).json();
-    } else {
-      res.status(404).json();
-    }
+router.route('/:id').delete(async (req, res) => {
+  if (await usersService.deleteUser(req.params.id)) {
+    res.status(204).json();
+  } else {
+    res.status(404).json();
   }
-);
+});
 
 module.exports = router;
