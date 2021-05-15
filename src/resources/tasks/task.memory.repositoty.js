@@ -4,10 +4,11 @@ let tasks = [];
 
 const getAll = () => tasks;
 
-const getTasksByBoardId = async boardId => tasks.filter(task => task.boardId === boardId);
+const getTasksByBoardId = async (boardId) =>
+  tasks.filter((task) => task.boardId === boardId);
 
 const getTasksByBoardTaskIds = async (boardId, taskId) =>
-  tasks.find(task => task.id === taskId);
+  tasks.find((task) => task.id === taskId);
 
 const createTask = async (boardId, task) => {
   const newTask = new Task(task);
@@ -16,12 +17,12 @@ const createTask = async (boardId, task) => {
   return newTask;
 };
 
-const deleteTasksByBoardId = async boardId => {
-  tasks = tasks.filter(task => task.boardId !== boardId);
+const deleteTasksByBoardId = async (boardId) => {
+  tasks = tasks.filter((task) => task.boardId !== boardId);
 };
 
 const updateTask = async (boardId, taskId, data) => {
-  const index = tasks.findIndex(task => task.id === taskId);
+  const index = tasks.findIndex((task) => task.id === taskId);
   if (index < 0) {
     return null;
   }
@@ -31,8 +32,8 @@ const updateTask = async (boardId, taskId, data) => {
   return task;
 };
 
-const deleteTask = async taskId => {
-  const index = tasks.findIndex(task => task.id === taskId);
+const deleteTask = async (taskId) => {
+  const index = tasks.findIndex((task) => task.id === taskId);
   if (index < 0) {
     return false;
   }
@@ -40,22 +41,23 @@ const deleteTask = async taskId => {
   return true;
 };
 
-const deleteUserFromTasks = async userId => {
-  tasks = tasks.map(task => {
+const deleteUserFromTasks = async (userId) => {
+  tasks = tasks.map((task) => {
     if (task.userId === userId) {
-      tasks.userId = null;
+      // eslint-disable-next-line no-param-reassign
+      task.userId = null;
     }
     return task;
   });
 };
 
 module.exports = {
-  getTasksByBoardId,
-  createTask,
   getAll,
+  getTasksByBoardId,
   getTasksByBoardTaskIds,
+  createTask,
   deleteTasksByBoardId,
   updateTask,
   deleteTask,
-  deleteUserFromTasks
+  deleteUserFromTasks,
 };

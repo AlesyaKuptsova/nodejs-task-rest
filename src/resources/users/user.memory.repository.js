@@ -1,4 +1,5 @@
 const User = require('./user.model');
+const taskService = require('../tasks/task.service');
 
 const users = [];
 const getAll = async () => users;
@@ -31,7 +32,7 @@ const deleteUser = async id => {
     return false;
   }
   users.splice(index, 1);
-  // TODO: When somebody DELETEs User, all Tasks where User is assignee should be updated to put userId = null.
+  await taskService.deleteUserFromTasks(id);
   return true;
 };
 
