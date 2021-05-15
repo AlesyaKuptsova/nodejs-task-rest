@@ -1,8 +1,8 @@
-const { v4: uuidv4 } = require('uuid');
+const uuid = require('uuid');
 
 class Task {
   constructor({ title, order, description, userId, boardId, columnId }) {
-    this.id = uuidv4();
+    this.id = uuid.v4();
     this.title = title;
     this.order = order;
     this.description = description;

@@ -17,7 +17,7 @@ const createUser = async (user) => {
 };
 
 const updateUser = async (id, data) => {
-  const index = users.findIndex(user => user.id === id);
+  const index = users.findIndex((user) => user.id === id);
   if (index < 0) {
     return null;
   }
@@ -26,8 +26,8 @@ const updateUser = async (id, data) => {
   return users[index];
 };
 
-const deleteUser = async id => {
-  const index = users.findIndex(user => user.id === id);
+const deleteUser = async (id) => {
+  const index = users.findIndex((user) => user.id === id);
   if (index < 0) {
     return false;
   }
@@ -35,6 +35,5 @@ const deleteUser = async id => {
   await taskService.deleteUserFromTasks(id);
   return true;
 };
-
 
 module.exports = { getAll, getUserById, createUser, updateUser, deleteUser };

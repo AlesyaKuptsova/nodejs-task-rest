@@ -42,13 +42,12 @@ const deleteTask = async (taskId) => {
 };
 
 const deleteUserFromTasks = async (userId) => {
-  tasks = tasks.map((task) => {
+  for(let i = 0; i < tasks.length; i += 1) {
+    const task = tasks[i];
     if (task.userId === userId) {
-      // eslint-disable-next-line no-param-reassign
       task.userId = null;
     }
-    return task;
-  });
+  }
 };
 
 module.exports = {

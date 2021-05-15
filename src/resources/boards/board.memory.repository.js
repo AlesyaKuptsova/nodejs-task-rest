@@ -1,4 +1,5 @@
 const Board = require('./board.model');
+const taskService = require('../tasks/task.service');
 
 const boards = [];
 
@@ -6,10 +7,10 @@ const getAll = async () => boards;
 
 const getBoardById = async (id) => boards.find((board) => board.id === id);
 
-const createBoard = async (board) => {
+const createBoard = async (data) => {
   const newBoard = new Board({
-    title: board.title,
-    columns: [],
+    title: data.title,
+    columns: data.columns,
   });
   boards.push(newBoard);
   return newBoard;
@@ -30,7 +31,7 @@ const deleteBoard = async (id) => {
   if (index < 0) {
     return false;
   }
-  // TODO: When somebody DELETEs Board, all its Tasks should be deleted as well.
+  await taskService.deleteTasksByBoardId(id);
   boards.splice(index, 1);
   return true;
 };

@@ -1,7 +1,10 @@
 const uuid = require('uuid');
 
 class Board {
-  constructor({ title = 'default title', columns = [] }) {
+  constructor({
+    title = 'default title',
+    columns = [],
+  }) {
     this.id = uuid.v4();
     this.title = title;
     this.columns = columns;
@@ -12,6 +15,5 @@ class Board {
     return { id, title, columns };
   }
 }
-
 
 module.exports = Board;
