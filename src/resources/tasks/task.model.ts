@@ -1,9 +1,9 @@
-const uuid = require('uuid');
+import * as uuid from 'uuid';
 
 /**
  * Class representing a Task.
  */
-class Task {
+export default class Task {
   /**
    * Creates an instance of Task.
    * @param {string} id task ID
@@ -15,8 +15,31 @@ class Task {
    * @param {stirng} columnId task column ID
    * @memberof Task
    */
-  constructor({ title, order, description, userId, boardId, columnId }) {
-    this.id = uuid.v4();
+
+  id: string;
+
+  title: string;
+
+  order: number;
+
+  description: string;
+
+  userId: string | null;
+
+  boardId: string;
+
+  columnId: string;
+
+  constructor({
+    id = uuid.v4(),
+    title = 'title',
+    order = 1,
+    description = 'description',
+    userId = 'userId',
+    boardId = 'boardId',
+    columnId = 'columnId',
+  } = {}) {
+    this.id = id;
     this.title = title;
     this.order = order;
     this.description = description;
@@ -32,10 +55,18 @@ class Task {
    * @return {object} response task
    * @memberof Task
    */
-  static toResponse(task) {
+  static toResponse(
+    task: Task
+  ): {
+    id: string;
+    title: string;
+    order: number;
+    description: string;
+    userId: string | null;
+    boardId: string;
+    columnId: string;
+  } {
     const { id, title, order, description, userId, boardId, columnId } = task;
     return { id, title, order, description, userId, boardId, columnId };
   }
 }
-
-module.exports = Task;
