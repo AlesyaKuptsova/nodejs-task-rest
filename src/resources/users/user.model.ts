@@ -1,9 +1,9 @@
-const uuid = require('uuid');
+import * as uuid from 'uuid';
 
 /**
  * Class representing a User.
  */
-class User {
+export default class User {
   /**
    * Creates an instance of User.
    * @param {string} id user ID
@@ -12,6 +12,15 @@ class User {
    * @param {string} password user password
    * @memberof User
    */
+
+  id: string;
+
+  name: string;
+
+  login: string;
+
+  password: string;
+
   constructor({
     id = uuid.v4(),
     name = 'USER',
@@ -28,13 +37,11 @@ class User {
    * Convert a user instance to the response representation.
    * @static
    * @param {User} user instance
-   * @return {object} response user
+   * @return {{id: string, name: string, login: string}} response user
    * @memberof User
    */
-  static toResponse(user) {
+  static toResponse(user: User): { id: string; name: string; login: string } {
     const { id, name, login } = user;
     return { id, name, login };
   }
 }
-
-module.exports = User;
