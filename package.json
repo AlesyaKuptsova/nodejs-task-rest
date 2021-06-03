@@ -55,6 +55,7 @@
     "yamljs": "0.3.0"
   },
   "devDependencies": {
+    "@types/winston": "^2.4.4",
     "@types/express": "^4.17.12",
     "@types/node": "^15.6.1",
     "@types/swagger-ui-express": "^4.1.2",
