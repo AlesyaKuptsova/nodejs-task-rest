@@ -12,9 +12,9 @@ import boardRouter from './resources/boards/board.router';
 
 import taskRouter from './resources/tasks/task.router';
 
-import { logInfo } from './common/logging';
+import { logRequest } from './middleware/logging';
 
-import { errorHandler } from './common/error-handling';
+import { errorHandler } from './middleware/error-handling';
 
 import { logger } from './common/logger';
 
@@ -23,7 +23,7 @@ const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
 app.use(express.json());
 
-app.use(logInfo);
+app.use(logRequest);
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
