@@ -1,8 +1,12 @@
-const router = require('express').Router();
-const User = require('./user.model');
-const usersService = require('./user.service');
+import * as express from 'express';
 
-router.route('/').get(async (req, res) => {
+import User from './user.model';
+
+import usersService from './user.service';
+
+const router = express.Router();
+
+router.route('/').get(async (_, res) => {
   const users = await usersService.getAll();
   // map user fields to exclude secret fields like "password"
   res.json(users.map(User.toResponse));
@@ -25,7 +29,9 @@ router.route('/').post(async (req, res) => {
 router.route('/:id').put(async (req, res) => {
   const user = await usersService.updateUser(req.params.id, req.body);
   if (user) {
-    await res.status(200).json(User.toResponse(user));
+    res.status(200).json(User.toResponse(user));
+  } else {
+    res.status(404).json();
   }
 });
 
@@ -37,4 +43,4 @@ router.route('/:id').delete(async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

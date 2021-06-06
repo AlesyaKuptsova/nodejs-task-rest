@@ -70,3 +70,10 @@ npm run lint
 Press <kbd>F5</kbd> to debug.
 
 For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+
+## JSDoc
+if you want to create a documentation page based on JSDoc descriptions
+
+```
+npm run doc
+```

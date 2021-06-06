@@ -1,10 +1,14 @@
-const router = require('express').Router();
-const taskService = require('./task.service');
-const Task = require('./task.model');
+import * as express from 'express';
+
+import Task from './task.model';
+
+import taskService from './task.service';
+
+const router = express.Router();
 
 router.route('/:boardId/tasks').get(async (req, res) => {
   const tasks = await taskService.getTasksByBoardId(req.params.boardId);
-  await res.json(tasks.map(Task.toResponse));
+  res.status(200).json(tasks.map(Task.toResponse));
 });
 
 router.route('/:boardId/tasks/:taskId').get(async (req, res) => {
@@ -13,7 +17,7 @@ router.route('/:boardId/tasks/:taskId').get(async (req, res) => {
     req.params.taskId
   );
   if (task) {
-    await res.json(Task.toResponse(task));
+    res.json(Task.toResponse(task));
   } else {
     res.status(404).json();
   }
@@ -31,7 +35,7 @@ router.route('/:boardId/tasks/:taskId').put(async (req, res) => {
     req.body
   );
   if (task) {
-    await res.json(Task.toResponse(task));
+    res.json(Task.toResponse(task));
   } else {
     res.status(404).json();
   }
@@ -45,4 +49,4 @@ router.route('/:boardId/tasks/:taskId').delete(async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
