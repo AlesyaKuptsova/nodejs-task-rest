@@ -1,10 +1,12 @@
 import { createLogger, format, transports } from 'winston';
 
+const customFormat = format.printf(({ level, message, timestamp }) => `${timestamp} ${level}: ${message}`);
+
 const fileFormat = format.combine(format.uncolorize(), format.json());
 
 const logger = createLogger({
   level: 'silly',
-  format: format.combine(format.colorize(), format.cli()),
+  format: format.combine(format.colorize(), format.timestamp(), customFormat),
   transports: [
     new transports.Console(),
     new transports.File({
