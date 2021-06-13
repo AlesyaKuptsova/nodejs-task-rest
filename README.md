@@ -77,3 +77,10 @@ if you want to create a documentation page based on JSDoc descriptions
 ```
 npm run doc
 ```
+### Docker
+`.env` file contains the configuration.
+If you want to start the application using docker:
+
+```
+docker-compose up # or docker compose up
+```
