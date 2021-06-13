@@ -12,10 +12,18 @@ import boardRouter from './resources/boards/board.router';
 
 import taskRouter from './resources/tasks/task.router';
 
+import { logRequest } from './middleware/logging';
+
+import { errorHandler } from './middleware/error-handling';
+
+import { logger } from './common/logger';
+
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
 app.use(express.json());
+
+app.use(logRequest);
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
@@ -29,5 +37,25 @@ app.use('/', (req, res, next) => {
 
 app.use('/users', userRouter);
 app.use('/boards', boardRouter, taskRouter);
+
+app.use(errorHandler);
+
+process.on('uncaughtException', (error) => {
+  logger.error(`captured error: ${error.message}`);
+  setTimeout(() => {
+    const { exit } = process;
+    exit(1);
+  }, 1000);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error(
+    `Unhandled rejection detected: ${reason} 'Unhandled Rejection at:' ${promise} `
+  );
+  setTimeout(() => {
+    const { exit } = process;
+    exit(1);
+  }, 1000);
+});
 
 export default app;
