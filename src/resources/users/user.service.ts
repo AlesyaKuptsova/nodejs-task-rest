@@ -1,4 +1,4 @@
-import usersRepo from './user.memory.repository';
+import usersRepo from './user.db.repository';
 
 import User from './user.model';
 

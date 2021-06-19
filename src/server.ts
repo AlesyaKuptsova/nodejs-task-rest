@@ -1,4 +1,6 @@
+import "reflect-metadata";
 import { config } from './common/config';
+import { withDB } from './db';
 
 import app from './app';
 
@@ -7,6 +9,8 @@ const { PORT, HOST } = config;
 const port = Number(PORT);
 const host = HOST || 'localhost';
 
-app.listen(port, host, () =>
-  console.log(`App is running on http://${host}:${port}`)
-);
+withDB(() => {
+  app.listen(port, host, () =>
+    console.log(`App is running on http://${host}:${port}`)
+  );
+});
