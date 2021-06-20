@@ -5,7 +5,8 @@ services:
     ports:
       - ${NODE_PORT}:${NODE_PORT}
     volumes:
-      - .:/opt/app
+      - ./logs:/opt/app/logs
+      - ./src:/opt/app/src
     depends_on:
       - postgres
     networks:
