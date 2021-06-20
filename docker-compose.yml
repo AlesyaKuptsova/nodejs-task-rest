@@ -1,0 +1,26 @@
+version: '3'
+services:
+  node:
+    build: .
+    ports:
+      - ${NODE_PORT}:${NODE_PORT}
+    volumes:
+      - .:/opt/app
+    depends_on:
+      - postgres
+    networks:
+      - net
+    restart: unless-stopped
+  postgres:
+    build: database/
+    environment:
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - net
+    restart: unless-stopped
+volumes:
+  pgdata: {}
+networks:
+  net: {}

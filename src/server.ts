@@ -2,8 +2,11 @@ import { config } from './common/config';
 
 import app from './app';
 
-const { PORT } = config;
+const { PORT, HOST } = config;
 
-app.listen(PORT, () =>
-  console.log(`App is running on http://localhost:${PORT}`)
+const port = Number(PORT);
+const host = HOST || 'localhost';
+
+app.listen(port, host, () =>
+  console.log(`App is running on http://${host}:${port}`)
 );
