@@ -25,24 +25,24 @@ type ColumnCreateData = {
   order: number;
 };
 
-type BoardCreateData = {
+/* type BoardCreateData = {
   title: string;
   columns: Array<ColumnCreateData>;
-};
+}; */
 
 /**
  * Create board.
  * @param {object} data board data
  * @return {Promise<Board>} new board
  */
-const createBoard = async (data: BoardCreateData): Promise<Board> => {
+/* const createBoard = async (data: BoardCreateData): Promise<Board> => {
   const newBoard = new Board({
     title: data.title,
     columns: data.columns.map((c) => new Column(c)),
   });
   boards.push(newBoard);
   return newBoard;
-};
+}; */
 
 type BoardUpdateData = {
   title: string;
@@ -87,7 +87,7 @@ const deleteBoard = async (id: string): Promise<boolean> => {
 export default {
   getAll,
   getBoardById,
-  createBoard,
+  // createBoard,
   updateBoard,
   deleteBoard,
 };
