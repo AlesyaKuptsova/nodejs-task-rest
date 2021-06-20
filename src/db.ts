@@ -14,12 +14,18 @@ const config: ConnectionOptions = {
     entities: [
         path.join(__dirname, "/entity/*.ts"),
     ],
-    synchronize: true,
+    migrations: ["./migration/*.ts"],
+    migrationsTableName: "custom_migration_table",
+    migrationsRun: true,
 }
 
 async function withDB(func: ()=>void): Promise<void> {
-    await createConnection(config);
-    func();
+    const connection = await createConnection(config);
+    try {
+        func();
+    } catch(_) {
+        await connection.close();
+    }
 }
 
 export { withDB };
