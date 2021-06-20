@@ -1,6 +1,6 @@
 import Task from './task.model';
 
-import tasksRepo from './task.memory.repositoty';
+import tasksRepo from './task.db.repository';
 
 import { Maybe } from '../../common/util';
 

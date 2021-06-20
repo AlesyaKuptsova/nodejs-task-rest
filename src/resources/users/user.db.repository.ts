@@ -3,7 +3,7 @@ import {User as DBUser} from '../../entity/user';
 
 import { Maybe } from '../../common/util';
 
-// import taskService from '../tasks/task.service';
+import taskService from '../tasks/task.service';
 
 function toModel(user: DBUser): User {
   return new User({
@@ -68,7 +68,7 @@ const deleteUser = async (id: string): Promise<boolean> => {
     return false;
   }
   await user.remove();
-  // await taskService.deleteUserFromTasks(id);
+  await taskService.deleteUserFromTasks(id);
   return true;
 }
 

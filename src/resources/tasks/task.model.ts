@@ -28,7 +28,7 @@ export default class Task {
 
   boardId: string;
 
-  columnId: string;
+  columnId: string | null;
 
   constructor({
     id = uuid.v4(),
@@ -38,7 +38,8 @@ export default class Task {
     userId = 'userId',
     boardId = 'boardId',
     columnId = 'columnId',
-  } = {}) {
+  }: {id?: string, title?: string,
+    order?: number, description?: string, userId?: string | null, boardId?: string, columnId?: string| null} = {}) {
     this.id = id;
     this.title = title;
     this.order = order;
@@ -64,7 +65,7 @@ export default class Task {
     description: string;
     userId: string | null;
     boardId: string;
-    columnId: string;
+    columnId: string | null;
   } {
     const { id, title, order, description, userId, boardId, columnId } = task;
     return { id, title, order, description, userId, boardId, columnId };
