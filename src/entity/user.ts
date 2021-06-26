@@ -12,5 +12,5 @@ export class User extends BaseEntity {
   login!: string;
 
   @Column('varchar')
-  password!: string;
+  passwordHash!: string;
 }

@@ -10,13 +10,22 @@ function toModel(user: DBUser): User {
     id: user.id,
     name: user.name,
     login: user.login,
-    password: user.password,
+    password: user.passwordHash,
   });
 }
 
 const getAll = async (): Promise<User[]> =>{
     const users = await DBUser.find();
     return users.map(toModel);
+}
+
+const findUserWithHash = async (login:string, passwordHash:string): Promise<Maybe<User>> =>{
+  const user = await DBUser.findOne({ login, passwordHash});
+  if(user) {
+    // TODO: figure out password field
+    return toModel(user);
+  }
+  return undefined;
 }
 
 const getUserById = async (id: string): Promise<Maybe<User>> => {
@@ -37,7 +46,7 @@ const createUser = async (user: UserCreateData): Promise<User> => {
   const newUser = new DBUser();
   newUser.name = user.name;
   newUser.login = user.login;
-  newUser.password = user.password;
+  newUser.passwordHash = user.password;
   await newUser.save();
   return toModel(newUser);
 };
@@ -57,7 +66,7 @@ const updateUser = async (
     return undefined;
   }
   user.name = data.name ? data.name : user.name;
-  user.password = data.password ? data.password : user.password;
+  user.passwordHash = data.password ? data.password : user.passwordHash;
   await user.save();
   return toModel(user);
 };
@@ -72,4 +81,4 @@ const deleteUser = async (id: string): Promise<boolean> => {
   return true;
 }
 
-export default { getAll, getUserById, createUser, updateUser, deleteUser };
+export default { getAll, getUserById, createUser, updateUser, deleteUser, findUserWithHash };
