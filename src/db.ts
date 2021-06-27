@@ -2,6 +2,7 @@ import { createConnection, ConnectionOptions } from 'typeorm';
 import dotenv from 'dotenv';
 import path from 'path';
 import userService from './resources/users/user.service';
+import { config as commonConfig } from './common/config';
 
 dotenv.config();
 
@@ -21,17 +22,18 @@ const config: ConnectionOptions = {
 async function withDB(func: () => void): Promise<void> {
   const connection = await createConnection(config);
   try {
-      // TODO create user
-    userService.createUser({
-      name: 'admin',
-      login: 'admin',
-      password: 'admin',
-    });
+    const adminPassword = commonConfig.ADMIN_PASSWORD;
+    if(adminPassword) {
+      userService.createUser({
+        name: 'admin',
+        login: 'admin',
+        password: adminPassword,
+      });
+    }
     func();
   } catch (_) {
     await connection.close();
   }
-
 }
 
 export { withDB };
