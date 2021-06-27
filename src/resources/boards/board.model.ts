@@ -46,13 +46,15 @@ export class Board {
    * @memberof Board
    */
   constructor({
+    id = uuid.v4(),
     title = 'default title',
     columns = [],
   }: {
+    id: string;
     title: string;
     columns: Array<Column>;
   }) {
-    this.id = uuid.v4();
+    this.id = id;
     this.title = title;
     this.columns = columns;
   }

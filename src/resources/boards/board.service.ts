@@ -1,4 +1,4 @@
-import boardsRepo from './board.memory.repository';
+import boardsRepo from './board.db.repository';
 
 import { Board } from './board.model';
 
