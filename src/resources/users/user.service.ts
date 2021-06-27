@@ -11,7 +11,6 @@ import { Maybe } from '../../common/util';
 import { config } from '../../common/config';
 
 const saltRounds = 10;
-const salt = bcrypt.genSaltSync(saltRounds);
 
 /**
  * Get all users.
@@ -40,7 +39,7 @@ type UserCreateData = {
  */
 const createUser = (user: UserCreateData): Promise<User> => {
   const newUser = { ...user };
-  newUser.password = bcrypt.hashSync(user.password, salt);
+  newUser.password = bcrypt.hashSync(user.password, saltRounds);
   return usersRepo.createUser(newUser);
 };
 
@@ -58,7 +57,7 @@ type UserUpdateData = {
 const updateUser = (id: string, data: UserUpdateData): Promise<Maybe<User>> => {
   const newData = { ...data };
   if (data.password) {
-    newData.password = bcrypt.hashSync(data.password, salt);
+    newData.password = bcrypt.hashSync(data.password, saltRounds);
   }
   return usersRepo.updateUser(id, newData);
 };
