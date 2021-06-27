@@ -10,7 +10,7 @@ function toModel(user: DBUser): User {
     id: user.id,
     name: user.name,
     login: user.login,
-    password: user.passwordHash,
+    passwordHash: user.passwordHash,
   });
 }
 
@@ -19,10 +19,9 @@ const getAll = async (): Promise<User[]> =>{
     return users.map(toModel);
 }
 
-const findUserWithHash = async (login:string, passwordHash:string): Promise<Maybe<User>> =>{
-  const user = await DBUser.findOne({ login, passwordHash});
+const findUserByLogin = async (login:string ): Promise<Maybe<User>> =>{
+  const user = await DBUser.findOne({ login });
   if(user) {
-    // TODO: figure out password field
     return toModel(user);
   }
   return undefined;
@@ -81,4 +80,4 @@ const deleteUser = async (id: string): Promise<boolean> => {
   return true;
 }
 
-export default { getAll, getUserById, createUser, updateUser, deleteUser, findUserWithHash };
+export default { getAll, getUserById, createUser, updateUser, deleteUser, findUserWithHash: findUserByLogin };

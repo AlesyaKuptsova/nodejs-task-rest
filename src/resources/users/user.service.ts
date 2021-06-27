@@ -10,7 +10,6 @@ import { Maybe } from '../../common/util';
 
 import { config } from '../../common/config';
 
-
 const saltRounds = 10;
 const salt = bcrypt.genSaltSync(saltRounds);
 
@@ -40,7 +39,7 @@ type UserCreateData = {
  * @returns {Promise<User>} new user
  */
 const createUser = (user: UserCreateData): Promise<User> => {
-  const newUser = {...user}
+  const newUser = { ...user };
   newUser.password = bcrypt.hashSync(user.password, salt);
   return usersRepo.createUser(newUser);
 };
@@ -57,12 +56,12 @@ type UserUpdateData = {
  * @returns {Promise<User>} user with changed values, null if doesn't exist
  */
 const updateUser = (id: string, data: UserUpdateData): Promise<Maybe<User>> => {
-  const newData = {...data}
+  const newData = { ...data };
   if (data.password) {
     newData.password = bcrypt.hashSync(data.password, salt);
   }
   return usersRepo.updateUser(id, newData);
-}
+};
 
 /**
  * Delete user.
@@ -72,22 +71,24 @@ const updateUser = (id: string, data: UserUpdateData): Promise<Maybe<User>> => {
 const deleteUser = async (id: string): Promise<boolean> =>
   usersRepo.deleteUser(id);
 
-const signToken = async (login: string, password: string): Promise<Maybe<string>> => {
+const signToken = async (
+  login: string,
+  password: string
+): Promise<Maybe<string>> => {
   if (!login || !password) {
     return undefined;
   }
-  const passwordHash = bcrypt.hashSync(password, salt);
-  const user = await usersRepo.findUserWithHash(login, passwordHash);
+  const user = await usersRepo.findUserWithHash(login);
   if (user) {
-    const payload = { sub: user.id, login };
-    // TODO: fail
-    const key = config.JWT_SECRET_KEY || "";
-    const token = jwt.sign(payload, key, {
-      expiresIn: 10000,
-    });
-    return token;
+    if (bcrypt.compareSync(password, user.passwordHash)) {
+      const payload = { sub: user.id, login };
+      const token = jwt.sign(payload, config.JWT_SECRET_KEY, {
+        expiresIn: 10000,
+      });
+      return token;
+    }
   }
-   return undefined;
+  return undefined;
 };
 
 export default {

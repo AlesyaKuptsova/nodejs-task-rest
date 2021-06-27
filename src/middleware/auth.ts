@@ -12,8 +12,7 @@ async function checkAuth(
   if (req.headers.authorization) {
     const token = req.headers.authorization.split(' ')[1];
     if (token) {
-      const key = config.JWT_SECRET_KEY || '';
-      jwt.verify(token, key, (err) => {
+      jwt.verify(token, config.JWT_SECRET_KEY, (err) => {
         if (err) {
           res.status(401).send('Unauthorized error');
         } else {
