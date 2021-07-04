@@ -1,7 +1,5 @@
 import bcrypt from 'bcrypt';
 
-import jwt from 'jsonwebtoken';
-
 import { Injectable } from '@nestjs/common';
 import { Maybe } from '../common/util';
 
@@ -10,6 +8,7 @@ import {UserDto} from './dto/user.dto';
 import { User as DBUser } from '../entity/user';
 import { CreateUserDto } from './dto/create-user.dto';
 import { TasksService } from '../tasks/tasks.service';
+
 
 const saltRounds = 10;
 
@@ -24,7 +23,9 @@ function toModel(user: DBUser): UserDto {
 
 @Injectable()
 export class UsersService {
-  constructor(private tasksService: TasksService) {}
+  constructor(private tasksService: TasksService) {
+    this.addAdmin();
+  }
 
   async getAll(): Promise<UserDto[]> {
     const users = await DBUser.find();
@@ -71,27 +72,14 @@ export class UsersService {
     return true;
   }
 
-  async signToken(login: string, password: string): Promise<Maybe<string>> {
-    if (!login || !password) {
-      return undefined;
+  private async addAdmin() {
+    const adminPassword = config.ADMIN_PASSWORD;
+    if(adminPassword) {
+      await this.createUser({
+        name: 'admin',
+        login: 'admin',
+        password: adminPassword,
+      });
     }
-    const user = await DBUser.findOne({ login });
-    if (user) {
-      if (bcrypt.compareSync(password, user.passwordHash)) {
-        const payload = { sub: user.id, login };
-        const token = jwt.sign(payload, config.JWT_SECRET_KEY, {
-          expiresIn: 10000,
-        });
-        return token;
-      }
-    }
-    return undefined;
-  }
-
-  async checkToken(token: string ): Promise<boolean>
-  {
-      // TODO: check this
-      const err = jwt.verify(token, config.JWT_SECRET_KEY);
-      return !err;
   }
 }
