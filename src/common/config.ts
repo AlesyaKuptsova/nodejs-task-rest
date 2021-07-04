@@ -18,6 +18,7 @@ const config = {
   JWT_SECRET_KEY: prepareKey(),
   AUTH_MODE: process.env['NODE_AUTH_MODE'] === 'true',
   ADMIN_PASSWORD: process.env['ADMIN_PASSWORD'],
+  USE_FASTIFY: process.env['USE_FASTIFY'] === 'true',
 };
 
 export { config };
