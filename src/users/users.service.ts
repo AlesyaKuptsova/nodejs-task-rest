@@ -1,14 +1,13 @@
 import bcrypt from 'bcrypt';
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Maybe } from '../common/util';
 
 import { config } from '../common/config';
-import {UserDto} from './dto/user.dto';
+import { UserDto } from './dto/user.dto';
 import { User as DBUser } from '../entity/user';
 import { CreateUserDto } from './dto/create-user.dto';
 import { TasksService } from '../tasks/tasks.service';
-
 
 const saltRounds = 10;
 
@@ -23,6 +22,8 @@ function toModel(user: DBUser): UserDto {
 
 @Injectable()
 export class UsersService {
+  private readonly logger = new Logger(UsersService.name);
+
   constructor(private tasksService: TasksService) {
     this.addAdmin();
   }
@@ -74,12 +75,16 @@ export class UsersService {
 
   private async addAdmin() {
     const adminPassword = config.ADMIN_PASSWORD;
-    if(adminPassword) {
-      await this.createUser({
-        name: 'admin',
-        login: 'admin',
-        password: adminPassword,
-      });
+    if (adminPassword) {
+      try {
+        await this.createUser({
+          name: 'admin',
+          login: 'admin',
+          password: adminPassword,
+        });
+      } catch (err) {
+        this.logger.log('admin user already created');
+      }
     }
   }
 }

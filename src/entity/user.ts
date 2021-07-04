@@ -8,7 +8,7 @@ export class User extends BaseEntity {
   @Column('varchar')
   name!: string;
 
-  @Column('varchar')
+  @Column({type: 'varchar', unique: true})
   login!: string;
 
   @Column('varchar')
