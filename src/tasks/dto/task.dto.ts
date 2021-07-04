@@ -1,20 +1,6 @@
 import * as uuid from 'uuid';
 
-/**
- * Class representing a Task.
- */
-export default class Task {
-  /**
-   * Creates an instance of Task.
-   * @param {string} id task ID
-   * @param {string} title task title
-   * @param {number} order task order
-   * @param {string} description task description
-   * @param {string} userId task user ID
-   * @param {string} boardId task board ID
-   * @param {stirng} columnId task column ID
-   * @memberof Task
-   */
+export default class TaskDto {
 
   id: string;
 
@@ -49,15 +35,8 @@ export default class Task {
     this.columnId = columnId;
   }
 
-  /**
-   * Convert a task instance to the response representation.
-   * @static
-   * @param {Task} task instance
-   * @return {object} response task
-   * @memberof Task
-   */
   static toResponse(
-    task: Task
+    task: TaskDto
   ): {
     id: string;
     title: string;
