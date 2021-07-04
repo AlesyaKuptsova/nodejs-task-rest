@@ -8,6 +8,7 @@ import {
   Controller,
   Get,
   UseGuards,
+  Logger,
 } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 
@@ -19,6 +20,8 @@ import { UsersService } from './users.service';
 @UseGuards(AuthGuard)
 export class UsersController {
   constructor(private usersService: UsersService) {}
+
+  private readonly logger = new Logger(UsersController.name);
 
   @Get()
   async findAll(): Promise<UserDto[]> {
@@ -46,6 +49,7 @@ export class UsersController {
   ): Promise<UserDto> {
     const user = await this.usersService.updateUser(id, createUserDto);
     if (user) {
+      this.logger.log(`user created: ${user.id} ${user.login}`);
       return user;
     }
     throw new NotFoundException();
@@ -57,5 +61,6 @@ export class UsersController {
     if (!removed) {
       throw new NotFoundException();
     }
+    this.logger.log(`user removed: ${id}`);
   }
 }

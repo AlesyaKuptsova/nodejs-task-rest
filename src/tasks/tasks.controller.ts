@@ -1,4 +1,4 @@
-import {
+import { Logger ,
   Body,
   Delete,
   Controller,
@@ -9,6 +9,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
+
 import { AuthGuard } from '../auth/auth.guard';
 
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -19,6 +20,8 @@ import { TasksService } from './tasks.service';
 @UseGuards(AuthGuard)
 export class TasksController {
   constructor(private tasksService: TasksService) {}
+
+  private readonly logger = new Logger(TasksController.name);
 
   @Get()
   async findAll(@Param('boardId') boardId: string): Promise<TaskDto[]> {
@@ -45,7 +48,9 @@ export class TasksController {
     @Param('boardId') boardId: string,
     @Body() createTaskDto: CreateTaskDto
   ): Promise<TaskDto> {
-    return this.tasksService.createTask(boardId, createTaskDto);
+    const task = await this.tasksService.createTask(boardId, createTaskDto);
+    this.logger.log(`task created: ${boardId} ${task.id} ${task.title}`);
+    return task;
   }
 
   @Put(':taskId')
@@ -74,5 +79,6 @@ export class TasksController {
     if (!removed) {
       throw new NotFoundException();
     }
+    this.logger.log(`task removed: ${boardId} ${taskId}`);
   }
 }

@@ -1,13 +1,11 @@
 import dotenv from 'dotenv';
 import { exit } from 'process';
-import { logger } from './logger';
 
 dotenv.config();
 
 function prepareKey() {
   const key = process.env['JWT_SECRET_KEY'];
   if(!key) {
-    logger.error("JWT_SECRET_KEY is not configured");
     exit(2);
   }
   return key;

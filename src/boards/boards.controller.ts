@@ -1,4 +1,4 @@
-import { Delete, Param, Post, Put , Body , Controller, Get, NotFoundException, UseGuards } from "@nestjs/common";
+import { Delete, Param, Post, Put , Body , Controller, Get, NotFoundException, UseGuards, Logger } from "@nestjs/common";
 import { AuthGuard } from "../auth/auth.guard";
 
 
@@ -10,6 +10,8 @@ import { CreateBoardDto } from "./dto/create-board.dto";
 @UseGuards(AuthGuard)
 export class BoardsController {
     constructor(private boardsService: BoardsService) {}
+
+    private readonly logger = new Logger(BoardsController.name);
 
     @Get()
     async findAll(): Promise<BoardDto[]> {
@@ -27,7 +29,9 @@ export class BoardsController {
 
   @Post()
   async create(@Body() createBoardDto: CreateBoardDto): Promise<BoardDto> {
-      return this.boardsService.createBoard(createBoardDto);
+      const board = await this.boardsService.createBoard(createBoardDto);
+      this.logger.log(`board create: ${board.id} ${board.title}`)
+      return board;
 }
 
   @Put(':id')
@@ -45,7 +49,8 @@ export class BoardsController {
   async remove(@Param('id') id: string): Promise<void> {
       const removed = await this.boardsService.deleteBoard(id);
       if (!removed) {
-      throw new NotFoundException();
+        throw new NotFoundException();
       }
+      this.logger.log(`board removed: ${id}`);
   }
 }
