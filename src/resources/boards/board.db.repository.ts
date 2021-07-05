@@ -18,7 +18,19 @@ function toModel(board: DBBoard): Board {
   return new Board({
     id: board.id,
     title: board.title,
-    columns: board.columns ? board.columns.map(toColumn) : [],
+    columns: board.columns ? board.columns.sort((a, b) => a.index - b.index).map(toColumn) : [],
+  });
+}
+
+function prepareColumns(columns: Column[]) {
+  let i = 0;
+  return columns.map(column => {
+    const dbColumn = new DBBoardColumn();
+    dbColumn.title = column.title;
+    dbColumn.order = column.order;
+    dbColumn.index = i;
+    i += 1;
+    return dbColumn;
   });
 }
 
@@ -48,12 +60,7 @@ type BoardCreateData = {
 const createBoard = async (data: BoardCreateData): Promise<Board> => {
   const newBoard = new DBBoard();
   newBoard.title = data.title;
-  newBoard.columns = data.columns.map(column => {
-    const dbColumn = new DBBoardColumn();
-    dbColumn.title = column.title;
-    dbColumn.order = column.order;
-    return dbColumn;
-  });
+  newBoard.columns = prepareColumns(data.columns);
   await newBoard.save();
   return toModel(newBoard);
 };
@@ -73,12 +80,7 @@ const updateBoard = async (
   }
   board.title = data.title ? data.title : board.title;
   if(data.columns) {
-    board.columns = data.columns.map(column => {
-      const dbColumn = new DBBoardColumn();
-      dbColumn.title = column.title;
-      dbColumn.order = column.order;
-      return dbColumn;
-    });
+    board.columns = prepareColumns(data.columns);
   }
   await board.save();
   return toModel(board);

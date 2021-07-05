@@ -12,9 +12,13 @@ import boardRouter from './resources/boards/board.router';
 
 import taskRouter from './resources/tasks/task.router';
 
+import  {checkAuth } from './middleware/auth';
+
 import { logRequest } from './middleware/logging';
 
 import { errorHandler } from './middleware/error-handling';
+
+import loginRouter from './resources/login/login.router';
 
 import { logger } from './common/logger';
 
@@ -35,8 +39,9 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use('/users', userRouter);
-app.use('/boards', boardRouter, taskRouter);
+app.use('/login', loginRouter);
+app.use('/users', [checkAuth, userRouter]);
+app.use('/boards', [checkAuth, boardRouter, taskRouter]);
 
 app.use(errorHandler);
 
