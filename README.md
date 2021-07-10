@@ -84,3 +84,39 @@ If you want to start the application using docker:
 ```
 docker-compose up # or docker compose up
 ```
+## Load testing(boards)
+### Express
+|                    |              |
+|--------------------|--------------|
+| Scenarios launched | 640          |
+| Scenarios completed| 640          |
+| Requests completed | 15360        |
+| Mean response/sec  | 191.83       |
+| Response time (msec):             |
+|   min:             | 5            |
+|   max:             | 438          |
+|   median:          | **18**       |
+|   p95:             | **64**       |
+|   p99:             | **117.9**    |
+| Scenario counts    | 640 (100%)   |
+| Codes:                            |
+|   200:             | 14720        |
+|   201:             | 640          |
+
+### Fastify
+|                    |              |
+|--------------------|--------------|
+| Scenarios launched | 640          |
+| Scenarios completed| 640          |
+| Requests completed | 15360        |
+| Mean response/sec  | 191.86       |
+| Response time (msec):             |
+|   min:             | 5            |
+|   max:             | 476          |
+|   median:          | **17**       |
+|   p95:             | **55**       |
+|   p99:             | **94**       |
+| Scenario counts    | 640 (100%)   |
+| Codes:                            |
+|   200:             | 14720        |
+|   201:             | 640          |
