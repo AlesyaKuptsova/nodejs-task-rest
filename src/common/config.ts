@@ -1,13 +1,11 @@
 import dotenv from 'dotenv';
 import { exit } from 'process';
-import { logger } from './logger';
 
 dotenv.config();
 
 function prepareKey() {
   const key = process.env['JWT_SECRET_KEY'];
   if(!key) {
-    logger.error("JWT_SECRET_KEY is not configured");
     exit(2);
   }
   return key;
@@ -20,6 +18,7 @@ const config = {
   JWT_SECRET_KEY: prepareKey(),
   AUTH_MODE: process.env['NODE_AUTH_MODE'] === 'true',
   ADMIN_PASSWORD: process.env['ADMIN_PASSWORD'],
+  USE_FASTIFY: process.env['USE_FASTIFY'] === 'true',
 };
 
 export { config };

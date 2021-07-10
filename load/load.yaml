@@ -1,0 +1,62 @@
+config:
+  target: http://localhost:4000
+  phases:
+    - duration: 20
+      arrivalRate: 2
+    - duration: 60
+      arrivalRate: 10
+
+before:
+  flow:
+    - log: "Get auth token"
+    - post:
+        url: "/login"
+        json:
+          login: "admin"
+          password: "admin"
+        capture:
+          - json: $.token
+            as: token
+
+scenarios:
+  - name: "boards"
+    flow:
+      - post:
+          url: "/boards"
+          headers:
+            authorization: "Bearer {{ token }}"
+          json:
+            title: "cthulhu"
+            columns:
+              - title: "war"
+                order: 42
+              - title: "death"
+                order: 43
+          capture:
+            - json: $.id
+              as: board_id
+      - loop:
+          - get:
+              url: "/boards/{{ board_id }}"
+              headers:
+                authorization: "Bearer {{ token }}"
+        count: 20
+      - put:
+          url: "/boards/{{ board_id }}"
+          headers:
+            authorization: "Bearer {{ token }}"
+          json:
+            title: "nyarlathotep"
+            columns:
+              - title: "evil"
+                order: 24
+              - title: "dead"
+                order: 25
+      - get:
+          url: "/boards"
+          headers:
+            authorization: "Bearer {{ token }}"
+      - delete:
+          url: "/boards/{{ board_id }}"
+          headers:
+            authorization: "Bearer {{ token }}"

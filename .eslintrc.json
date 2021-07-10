@@ -41,6 +41,8 @@
       "tryExtensions": [".js", ".ts", ".json", ".node"]
     }],
     "dot-notation": "off",
+    "class-methods-use-this": "off",
+    "no-useless-constructor": "off",
     "@typescript-eslint/dot-notation": ["error"],
     "max-classes-per-file": ["error", 3]
   }
